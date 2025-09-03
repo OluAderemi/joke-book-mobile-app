@@ -23,7 +23,7 @@ This is a mobile application that fetches and displays jokes from the Official J
 
 1. Clone the repository:
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/OluAderemi/joke-book-mobile-app
 cd joke_app
 ````
 
@@ -59,3 +59,4 @@ flutter run
     * Left/Right arrows on the sides
     * Swipe gestures
 5. Use "Back to List" to return to the category list or "Home" to return to the front cover.
+
