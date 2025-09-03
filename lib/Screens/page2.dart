@@ -116,7 +116,10 @@ class _Page2State extends State<Page2> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Page3(joke: joke),
+                        builder: (context) => Page3(
+                          jokes: jokes,
+                          initialIndex: index,
+                        ),
                       ),
                     );
                   },
