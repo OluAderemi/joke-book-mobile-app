@@ -13,10 +13,12 @@ class _Page2State extends State<Page2> {
   final List<String> categories = ['general', 'knock-knock', 'programming'];
   List<Joke> jokes = [];
   bool isLoading = false;
+  String? selectedCategory;
 
   Future<void> fetchJokes(String category) async {
     setState(() {
       isLoading = true;
+      selectedCategory = category;
     });
 
     try {
@@ -48,11 +50,28 @@ class _Page2State extends State<Page2> {
     }
   }
 
+  void refreshJokes() {
+    if (selectedCategory != null) {
+      fetchJokes(selectedCategory!);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a category first')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Select a Category'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: refreshJokes,
+            tooltip: 'Refresh Jokes',
+          ),
+        ],
       ),
       body: Column(
         children: [
