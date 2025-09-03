@@ -4,7 +4,6 @@ import '../Models/joke_model.dart';
 import 'page3.dart';
 import 'package:http/http.dart' as http;
 
-
 class Page2 extends StatefulWidget {
   @override
   _Page2State createState() => _Page2State();
@@ -20,21 +19,31 @@ class _Page2State extends State<Page2> {
       isLoading = true;
     });
 
-    final response = await http.get(
-        Uri.parse('https://official-joke-api.appspot.com/jokes/$category/ten'));
+    try {
+      final response = await http.get(
+        Uri.parse('https://official-joke-api.appspot.com/jokes/$category/ten'),
+      );
 
-    if (response.statusCode == 200) {
-      final List data = json.decode(response.body);
-      setState(() {
-        jokes = data.map((j) => Joke.fromJson(j)).toList();
-        isLoading = false;
-      });
-    } else {
+      if (response.statusCode == 200) {
+        final List data = json.decode(response.body);
+        setState(() {
+          jokes = data.map((j) => Joke.fromJson(j)).toList();
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to load jokes')),
+        );
+      }
+    } catch (e) {
       setState(() {
         isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load jokes')),
+        SnackBar(content: Text('Error: $e')),
       );
     }
   }
@@ -43,15 +52,17 @@ class _Page2State extends State<Page2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select a Category'),
+        title: const Text('Select a Category'),
       ),
       body: Column(
         children: [
           // Category buttons
           Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            padding: const EdgeInsets.all(16),
+            child: Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              alignment: WrapAlignment.center,
               children: categories.map((category) {
                 return ElevatedButton(
                   onPressed: () => fetchJokes(category),
@@ -63,13 +74,17 @@ class _Page2State extends State<Page2> {
           // Joke list
           Expanded(
             child: isLoading
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : ListView.builder(
               itemCount: jokes.length,
               itemBuilder: (context, index) {
                 final joke = jokes[index];
                 return ListTile(
-                  title: Text(joke.setup),
+                  title: Text(
+                    joke.setup,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
                     Navigator.push(
                       context,
