@@ -10,7 +10,16 @@ class Page3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Punchline'),
+        title: const Text('Punchline'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+            tooltip: 'Go Home',
+          ),
+        ],
       ),
       body: Center(
         child: Padding(

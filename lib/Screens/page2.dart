@@ -67,12 +67,20 @@ class _Page2State extends State<Page2> {
         title: const Text('Select a Category'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+            tooltip: 'Go Home',
+          ),
+          IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: refreshJokes,
             tooltip: 'Refresh Jokes',
           ),
         ],
       ),
+
       body: Column(
         children: [
           // Category buttons
